@@ -14,10 +14,11 @@ const app = new Vue({
 		token: null,
         hasError: false
     },
+    mounted() {
+        this.search();	
+    },
     methods: {
-	mounted() {
-	    this.search();	
-	},
+	
         search: function () {
             
             this.reset();
