@@ -1,11 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ZenQL Demo - Zengenti.ZenQL</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
+          integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/site.css"/>
 </head>
 <body>
-    <h1>Hello</h1>
+
+<div>
+    <main>
+        <h1>ZenQL Demo</h1>
+        <div id="app">
+
+            <div class="pure-g">
+                <div class="pure-u-5-5">
+                    <form class="pure-form" @submit.prevent>
+                        <div style="display: table-cell; width: 100%">
+							<textarea id="zenql-searchbox" v-model="query" class="pure-input-rounded" v-bind:class="{ error: hasError }" spellcheck="false"
+									@focus="loadSuggestionsOnFocus"
+									@keyup="loadSuggestions"
+									@blur="clearSuggestions"
+                                    @mouseup="loadSuggestions"
+                                    @keydown.enter.prevent="search"></textarea>
+                        </div>
+                        <div style="display: table-cell; min-width: 100px;">
+                            <button class="ml10 button-primary pure-button" v-on:click="search">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+			<pre>{{token}}</pre>
+            <div class="pure-g mt10" v-if="error">
+                <div class="pure-u-5-5">
+                    <p class="error-message">{{error}}</p>
+                </div>
+            </div>
+
+            <div class="pure-g mt30" v-if="mappedQuery">
+                <div class="pure-u-5-5">
+                    <pre v-html="$options.filters.pretty(mappedQuery)"></pre>
+                </div>
+            </div>
+
+            <div class="pure-g mt30" v-if="entries">
+                <div class="pure-u-5-5">
+                    <table class="pure-table">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Content type</th>
+                            <th>Language</th>
+                            <th>State</th>
+                            <th>Modified</th>
+                            <th>Version</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="entry in entries.items" :key="entry.id">
+                            <td>{{entry.entryTitle}}</td>
+                            <td>{{entry.sys.contentTypeId}}</td>
+                            <td>{{entry.sys.language}}</td>
+                            <td v-if="entry.sys.workflow">{{entry.sys.workflow.state}}</td>
+                            <td v-else>[NO WORKFLOW]</td>
+                            <td>{{entry.sys.version.modified | date}}</td>
+                            <td>{{entry.sys.version.versionNo}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+</div>
+
+<script src="/lib/vue.js"></script>
+<script src="/dist/bundle.js"></script>
+<script src="js/search.js"></script>
+
 </body>
 </html>
