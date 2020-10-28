@@ -23,7 +23,7 @@ const app = new Vue({
                 return;
             }
 
-            const url = 'api/search?zenQL=' + this.query;
+            const url = 'https://preview-develop.cloud.contensis.com/api/search?zenQL=' + this.query;
             const options = {
                 method: 'GET',
                 headers: {
