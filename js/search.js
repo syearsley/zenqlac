@@ -7,7 +7,7 @@ Vue.filter('date', function(value) {
 const app = new Vue({
     el: '#app',
     data: {
-        query: '',
+        query: 'sys.contentTypeId = book',
         mappedQuery: null,
         entries: null,
 		error: null,
@@ -15,6 +15,9 @@ const app = new Vue({
         hasError: false
     },
     methods: {
+	mounted() {
+	    this.search();	
+	},
         search: function () {
             
             this.reset();
